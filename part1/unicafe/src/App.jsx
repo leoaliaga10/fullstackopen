@@ -1,18 +1,27 @@
 import { useState } from "react";
 
 const Statistics = (props) => {
+  const StatisticLine = ({ text, value }) => {
+    return (
+      <>
+        <p>
+          {text} {value}
+        </p>
+      </>
+    );
+  };
   if (props.sum === 0 && props.avg === 0 && props.pos === 0) {
     return (
       <>
-        <p>No feedbak given</p>
+        <StatisticLine text="No feedbak given" />
       </>
     );
   } else {
     return (
       <>
-        <p>all {props.sum}</p>
-        <p>average {props.avg}</p>
-        <p>positive {props.pos}</p>
+        <StatisticLine text="all" value={props.sum} />
+        <StatisticLine text="avg" value={props.avg} />
+        <StatisticLine text="pos" value={props.pos} />
       </>
     );
   }

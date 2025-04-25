@@ -4,9 +4,10 @@ const Statistics = (props) => {
   const StatisticLine = ({ text, value }) => {
     return (
       <>
-        <p>
-          {text} {value}
-        </p>
+        <tr>
+          <td>{text}</td>
+          <td>{value}</td>
+        </tr>
       </>
     );
   };
@@ -38,9 +39,10 @@ const Title = ({ text }) => {
 const Par = ({ total, text }) => {
   return (
     <>
-      <p>
-        {text} {total}
-      </p>
+      <tr>
+        <td>{text}</td>
+        <td>{total}</td>
+      </tr>
     </>
   );
 };
@@ -98,10 +100,14 @@ const App = () => {
       <Button handleClick={handleNeutralClick} text="neutral" />
       <Button handleClick={handleBadClick} text="bad" />
       <Title text="statistics" />
-      <Par text="good" total={good} />
-      <Par text="neutral" total={neutral} />
-      <Par text="bad" total={bad} />
-      <Statistics sum={sum} avg={avg} pos={pos} />
+      <table>
+        <tbody>
+          <Par text="good" total={good} />
+          <Par text="neutral" total={neutral} />
+          <Par text="bad" total={bad} />
+          <Statistics sum={sum} avg={avg} pos={pos} />
+        </tbody>
+      </table>
     </>
   );
 };

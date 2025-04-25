@@ -1,5 +1,15 @@
 import { useState } from "react";
 
+const Statistics = (props) => {
+  return (
+    <>
+      <p>all {props.sum}</p>
+      <p>all {props.avg}</p>
+      <p>all {props.pos}</p>
+    </>
+  );
+};
+
 const Title = ({ text }) => {
   return (
     <>
@@ -74,9 +84,7 @@ const App = () => {
       <Par text="good" total={good} />
       <Par text="neutral" total={neutral} />
       <Par text="bad" total={bad} />
-      <Par text="all" total={sum} />
-      <Par text="average" total={avg} />
-      <Par text="positive" total={pos} />
+      <Statistics sum={sum} avg={avg} pos={pos} />
     </>
   );
 };

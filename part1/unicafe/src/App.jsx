@@ -1,13 +1,21 @@
 import { useState } from "react";
 
 const Statistics = (props) => {
-  return (
-    <>
-      <p>all {props.sum}</p>
-      <p>all {props.avg}</p>
-      <p>all {props.pos}</p>
-    </>
-  );
+  if (props.sum === 0 && props.avg === 0 && props.pos === 0) {
+    return (
+      <>
+        <p>No feedbak given</p>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <p>all {props.sum}</p>
+        <p>average {props.avg}</p>
+        <p>positive {props.pos}</p>
+      </>
+    );
+  }
 };
 
 const Title = ({ text }) => {

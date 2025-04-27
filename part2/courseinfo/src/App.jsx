@@ -23,7 +23,23 @@ const Course = (props) => {
       <>
         <Part name={props.parts[0].name} exercises={props.parts[0].exercises} />
         <Part name={props.parts[1].name} exercises={props.parts[1].exercises} />
-        <Part name={props.parts[2].name} exercises={props.parts[1].exercises} />
+        <Part name={props.parts[2].name} exercises={props.parts[2].exercises} />
+        <Part name={props.parts[3].name} exercises={props.parts[3].exercises} />
+      </>
+    );
+  };
+  const Total = (props) => {
+    console.log("Parte Ejercicios ", props.parts[0].exercises);
+    return (
+      <>
+        <p>
+          Total of{" "}
+          {props.parts[0].exercises +
+            props.parts[1].exercises +
+            props.parts[2].exercises +
+            props.parts[3].exercises}{" "}
+          exercises
+        </p>
       </>
     );
   };
@@ -31,6 +47,7 @@ const Course = (props) => {
     <>
       <Header name={props.course.name} />
       <Content parts={props.course.parts} />
+      <Total parts={props.course.parts} />
     </>
   );
 };
@@ -53,6 +70,11 @@ const App = () => {
         name: "State of a component",
         exercises: 14,
         id: 3,
+      },
+      {
+        name: "Redux",
+        exercises: 11,
+        id: 4,
       },
     ],
   };

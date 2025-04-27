@@ -1,6 +1,6 @@
 const Course = (props) => {
   const Header = (props) => {
-    console.log("Nombre", props.name);
+    //console.log("Nombre", props.name);
     return (
       <>
         <h1>{props.name}</h1>
@@ -8,9 +8,9 @@ const Course = (props) => {
     );
   };
   const Content = (props) => {
-    console.log("Contenido ", props.parts[0].name);
+    //console.log("Contenido ", props.parts[0].name);
     const Part = (props) => {
-      console.log("Parte Nombre ", props.name);
+      //console.log("Parte Nombre ", props.name);
       return (
         <>
           <p>
@@ -29,17 +29,17 @@ const Course = (props) => {
     );
   };
   const Total = (props) => {
-    console.log("Parte Ejercicios ", props.parts[0].exercises);
+    const parts = props.parts;
+    //console.log(parts);
+
+    const total = parts.reduce((s, p) => {
+      //console.log("what is happening", s, p);
+      return s + p.exercises;
+    }, 0);
+    //console.log("Parte Ejercicios ", props.parts);
     return (
       <>
-        <p>
-          Total of{" "}
-          {props.parts[0].exercises +
-            props.parts[1].exercises +
-            props.parts[2].exercises +
-            props.parts[3].exercises}{" "}
-          exercises
-        </p>
+        <p>Total of {total} exercises</p>
       </>
     );
   };

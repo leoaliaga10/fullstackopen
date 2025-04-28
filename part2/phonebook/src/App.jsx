@@ -4,19 +4,26 @@ const App = () => {
   const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
   const [newName, setNewName] = useState("");
 
-  // const names = persons.map((persona) => persona.name);
-  // console.log("Persons name map", names);
-
   const addName = (event) => {
     event.preventDefault();
     const nameObject = {
       name: newName,
     };
-    setPersons(persons.concat(nameObject));
+
+    //..................
+    let pivot = false;
+    persons.forEach(function (elemento, indice) {
+      const repetead = elemento.name === newName ? true : false;
+      repetead ? (pivot = true) : "";
+    });
+    pivot
+      ? alert(`${newName} is already added to phonebook`)
+      : setPersons(persons.concat(nameObject));
+    //...................
+    // setPersons(persons.concat(nameObject));
     setNewName("");
   };
   const handleNameChange = (event) => {
-    console.log(event.target.value);
     setNewName(event.target.value);
   };
 
@@ -28,7 +35,6 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <form onSubmit={addName}>
-        <div>debug: {newName}</div>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
         </div>

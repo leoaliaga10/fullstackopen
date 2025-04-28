@@ -1,24 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 
+import axios from "axios";
+
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", phone: "040-123456", id: 1 },
-    { name: "Ada Lovelace", phone: "39-44-5323523", id: 2 },
-    { name: "Dan Abramov", phone: "12-43-234345", id: 3 },
-    { name: "Mary Poppendieck", phone: "39-23-6423122", id: 4 },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const [textFind, setTextFind] = useState("");
+
+  //........... persons of server
+
+  const hook = () => {
+    axios.get("http://localhost:3001/persons").then((response) => {
+      setPersons(response.data);
+    });
+  };
+
+  useEffect(hook, []);
+  //...........................
 
   const addName = (event) => {
     event.preventDefault();
     const nameObject = {
       name: newName,
       phone: newPhone,
+      id: persons.length + 1,
     };
 
     //.................. find
@@ -65,8 +74,12 @@ const App = () => {
       />
       <h2>Numbers</h2>
       <ul>
-        {resultadoFiltro.map((persona, index) => (
-          <Persons key={index} names={persona.name} phones={persona.phone} />
+        {resultadoFiltro.map((persona) => (
+          <Persons
+            key={persona.id}
+            names={persona.name}
+            phones={persona.phone}
+          />
         ))}
       </ul>
     </div>

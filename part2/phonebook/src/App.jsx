@@ -1,4 +1,7 @@
 import { useState } from "react";
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -18,7 +21,7 @@ const App = () => {
       phone: newPhone,
     };
 
-    //..................
+    //.................. find
     let pivot = false;
     persons.forEach(function (elemento, indice) {
       const repetead = elemento.name === newName ? true : false;
@@ -39,11 +42,7 @@ const App = () => {
   const handlePhoneChange = (event) => {
     setNewPhone(event.target.value);
   };
-
-  const handleFindChange = (event) => {
-    setTextFind(event.target.value);
-  };
-
+  //...................... filtre
   function filtrarPorNombre(text) {
     const textoEnMinusculas = text.toLowerCase();
     return persons.filter((person) =>
@@ -52,33 +51,18 @@ const App = () => {
   }
   const resultadoFiltro = filtrarPorNombre(textFind);
 
-  const Persons = ({ names, phones }) => {
-    return (
-      <li>
-        {names} {phones}
-      </li>
-    );
-  };
-
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with:{" "}
-        <input value={textFind} onChange={handleFindChange} />
-      </div>
+      <Filter textFind={textFind} setTextFind={setTextFind} />
       <h2>add a new</h2>
-      <form onSubmit={addName}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newPhone} onChange={handlePhoneChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm
+        addName={addName}
+        newName={newName}
+        newPhone={newPhone}
+        handleNameChange={handleNameChange}
+        handlePhoneChange={handlePhoneChange}
+      />
       <h2>Numbers</h2>
       <ul>
         {resultadoFiltro.map((persona, index) => (

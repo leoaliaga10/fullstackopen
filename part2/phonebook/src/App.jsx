@@ -1,14 +1,19 @@
 import { useState } from "react";
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", phone: "040-1234567" },
+  ]);
   const [newName, setNewName] = useState("");
+  const [newPhone, setNewPhone] = useState("");
 
   const addName = (event) => {
     event.preventDefault();
     const nameObject = {
       name: newName,
+      phone: newPhone,
     };
+    console.log(nameObject);
 
     //..................
     let pivot = false;
@@ -22,13 +27,22 @@ const App = () => {
     //...................
     // setPersons(persons.concat(nameObject));
     setNewName("");
+    setNewPhone("");
   };
   const handleNameChange = (event) => {
     setNewName(event.target.value);
   };
 
-  const Persons = ({ names }) => {
-    return <li>{names}</li>;
+  const handlePhoneChange = (event) => {
+    setNewPhone(event.target.value);
+  };
+
+  const Persons = ({ names, phones }) => {
+    return (
+      <li>
+        {names} {phones}
+      </li>
+    );
   };
 
   return (
@@ -39,13 +53,16 @@ const App = () => {
           name: <input value={newName} onChange={handleNameChange} />
         </div>
         <div>
+          number: <input value={newPhone} onChange={handlePhoneChange} />
+        </div>
+        <div>
           <button type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
       <ul>
         {persons.map((persona, index) => (
-          <Persons key={index} names={persona.name} />
+          <Persons key={index} names={persona.name} phones={persona.phone} />
         ))}
       </ul>
     </div>

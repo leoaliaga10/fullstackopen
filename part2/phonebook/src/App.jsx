@@ -20,12 +20,23 @@ const App = () => {
 
   //...........................
 
+  const handleDeleteOf = async (id) => {
+    try {
+      if (window.confirm("Do you really want to delete?")) {
+        personsService.f_delete(id);
+        setPersons(persons.filter((item) => item.id !== id));
+      }
+    } catch (error) {
+      console.error("Error al eliminar el item:", error);
+    }
+  };
+
   const addName = (event) => {
     event.preventDefault();
     const nameObject = {
       name: newName,
       phone: newPhone,
-      id: persons.length + 1,
+      id: `${persons.length + 1}`,
     };
 
     //.................. find
@@ -80,6 +91,7 @@ const App = () => {
             key={persona.id}
             names={persona.name}
             phones={persona.phone}
+            handleDelete={() => handleDeleteOf(persona.id)}
           />
         ))}
       </ul>

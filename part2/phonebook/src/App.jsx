@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
-
-import axios from "axios";
+import personsService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -13,13 +12,12 @@ const App = () => {
 
   //........... persons of server
 
-  const hook = () => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
+  useEffect(() => {
+    personsService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
     });
-  };
+  }, []);
 
-  useEffect(hook, []);
   //...........................
 
   const addName = (event) => {
@@ -38,7 +36,10 @@ const App = () => {
     });
     pivot
       ? alert(`${newName} is already added to phonebook`)
-      : setPersons(persons.concat(nameObject));
+      : personsService.create(nameObject).then((returnedName) => {
+          setPersons(persons.concat(returnedName));
+          setNewName("");
+        }); //setPersons(persons.concat(nameObject));
     //...................
     // setPersons(persons.concat(nameObject));
     setNewName("");

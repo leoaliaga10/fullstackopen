@@ -3,12 +3,15 @@ import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import personsService from "./services/persons";
+import Notification from "./components/Notification";
+import "./index.css";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const [textFind, setTextFind] = useState("");
+  const [textMessage, setTextMessage] = useState(null);
 
   //........... persons of server
 
@@ -60,10 +63,19 @@ const App = () => {
                 persona.id !== my_id ? persona : returnedPerson
               )
             );
+            setTextMessage(`Update ${newName}`);
+            setTimeout(() => {
+              setTextMessage(null);
+            }, 3000);
           })
         : " "
       : personsService.create(nameObject).then((returnedName) => {
           setPersons(persons.concat(returnedName));
+          setTextMessage(`Added ${newName}`);
+          setTimeout(() => {
+            setTextMessage(null);
+          }, 3000);
+
           setNewName("");
         }); //setPersons(persons.concat(nameObject));
     //...................
@@ -90,6 +102,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={textMessage} />
       <Filter textFind={textFind} setTextFind={setTextFind} />
       <h2>add a new</h2>
       <PersonForm

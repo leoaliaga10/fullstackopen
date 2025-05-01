@@ -39,6 +39,11 @@ const App = () => {
       id: `${persons.length + 1}`,
     };
 
+    const getIdByName = (name) =>
+      persons.find((p) => p.name === name)?.id || null;
+
+    const my_id = getIdByName(newName);
+    console.log(getIdByName(newName));
     //.................. find
     let pivot = false;
     persons.forEach(function (elemento, indice) {
@@ -46,7 +51,17 @@ const App = () => {
       repetead ? (pivot = true) : "";
     });
     pivot
-      ? alert(`${newName} is already added to phonebook`)
+      ? window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        )
+        ? personsService.update(my_id, nameObject).then((returnedPerson) => {
+            setPersons(
+              persons.map((persona) =>
+                persona.id !== my_id ? persona : returnedPerson
+              )
+            );
+          })
+        : " "
       : personsService.create(nameObject).then((returnedName) => {
           setPersons(persons.concat(returnedName));
           setNewName("");

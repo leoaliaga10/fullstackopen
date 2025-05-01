@@ -12,7 +12,7 @@ const App = () => {
   const [newPhone, setNewPhone] = useState("");
   const [textFind, setTextFind] = useState("");
   const [textMessage, setTextMessage] = useState(null);
-
+  const [className, setClasName] = useState("success");
   //........... persons of server
 
   useEffect(() => {
@@ -22,31 +22,46 @@ const App = () => {
   }, []);
 
   //...........................
+  const getNameById = (id) => persons.find((p) => p.id === id)?.name || null;
 
   const handleDeleteOf = async (id) => {
-    try {
-      if (window.confirm("Do you really want to delete?")) {
-        personsService.f_delete(id);
+    if (window.confirm("Do you really want to delete?")) {
+      try {
+        await personsService.f_delete(id);
         setPersons(persons.filter((item) => item.id !== id));
+      } catch (error) {
+        setTextMessage(
+          `Information of ${getNameById(
+            id
+          )} has already been removed from server`
+        );
+        setClasName("error");
+        setTimeout(() => {
+          setTextMessage(null);
+        }, 15000);
       }
-    } catch (error) {
-      console.error("Error al eliminar el item:", error);
     }
   };
 
   const addName = (event) => {
     event.preventDefault();
+
+    const getMaxId = () => {
+      if (persons.length === 0) return null;
+      return persons.reduce((max, p) => Math.max(max, Number(p.id)), 0);
+    };
+
     const nameObject = {
       name: newName,
       phone: newPhone,
-      id: `${persons.length + 1}`,
+      id: `${getMaxId() + 1}`,
     };
 
     const getIdByName = (name) =>
       persons.find((p) => p.name === name)?.id || null;
 
     const my_id = getIdByName(newName);
-    console.log(getIdByName(newName));
+    //console.log(getIdByName(newName));
     //.................. find
     let pivot = false;
     persons.forEach(function (elemento, indice) {
@@ -102,7 +117,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={textMessage} />
+      <Notification message={textMessage} className={className} />
       <Filter textFind={textFind} setTextFind={setTextFind} />
       <h2>add a new</h2>
       <PersonForm

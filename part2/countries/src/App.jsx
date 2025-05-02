@@ -8,6 +8,7 @@ const App = () => {
   const [names, setNames] = useState({});
   const [countries, setCountries] = useState(null);
   const [all, setAll] = useState({});
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
   const allNames =
     Object.keys(all).length > 0 ? all.map((country) => country.name) : "";
@@ -16,11 +17,13 @@ const App = () => {
 
   //one countrie
   useEffect(() => {
-    if (resultadoFiltro.length === 1) {
-      const selected = resultadoFiltro[0];
-      setCountries(selected.common);
+    if (numberResultFiltre === 1 || selectedCountry) {
+      const selected = selectedCountry
+        ? selectedCountry
+        : resultadoFiltro[0].common;
+      setCountries(selected);
 
-      countrieService.getOne({ countries: selected.common }).then((data) => {
+      countrieService.getOne({ countries: selected }).then((data) => {
         setNames(data);
       });
     }
@@ -35,6 +38,7 @@ const App = () => {
 
   const handleChange = (event) => {
     setValue(event.target.value);
+    setSelectedCountry(null);
   };
 
   //Filtre
@@ -46,6 +50,10 @@ const App = () => {
         )
       : "";
   }
+  const handleShow = (countryName) => {
+    setCountries(countryName);
+    setSelectedCountry(countryName);
+  };
 
   return (
     <>
@@ -55,12 +63,16 @@ const App = () => {
         </div>
       </form>
       <br></br>
-      {numberResultFiltre === 1 ? (
+      {numberResultFiltre === 1 || selectedCountry ? (
         <Information names={names} />
       ) : numberResultFiltre <= 10 ? (
         resultadoFiltro ? (
           resultadoFiltro.map((countrie) => (
-            <Filter key={countrie.common} countrie={countrie.common} />
+            <Filter
+              key={countrie.common}
+              countrie={countrie.common}
+              onShow={handleShow}
+            />
           ))
         ) : (
           ""

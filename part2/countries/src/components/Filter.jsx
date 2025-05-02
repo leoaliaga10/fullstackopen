@@ -1,7 +1,10 @@
-const Filter = ({ countrie }) => {
+const Filter = ({ countrie, onShow }) => {
   return (
     <>
-      <div>{countrie}</div>
+      <div>
+        {countrie}
+        <button onClick={() => onShow(countrie)}>Show</button>
+      </div>
     </>
   );
 };

@@ -1,10 +1,11 @@
-const Information = ({ names }) => {
+const Information = ({ names, temp }) => {
   const commonName = names?.name?.common;
   const capital = names?.capital;
   const area = names?.area;
   const languages = names?.languages;
   const url_img = names?.flags?.png;
 
+  const tempCurrent = temp?.current?.temp_c;
   return (
     <>
       <h1>{commonName}</h1>
@@ -21,6 +22,8 @@ const Information = ({ names }) => {
       <picture>
         <img src={url_img} alt="Flag" />
       </picture>
+      <h2>Weather in {capital}</h2>
+      <h4>Temperature {tempCurrent} Celcius</h4>
     </>
   );
 };

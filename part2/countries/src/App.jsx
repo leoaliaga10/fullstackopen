@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import countrieService from "./services/countries";
+import weatherService from "./services/weather";
 import Information from "./components/Information";
 import Filter from "./components/Filter";
 
@@ -9,6 +10,7 @@ const App = () => {
   const [countries, setCountries] = useState(null);
   const [all, setAll] = useState({});
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const [temp, setTemp] = useState({});
 
   const allNames =
     Object.keys(all).length > 0 ? all.map((country) => country.name) : "";
@@ -41,7 +43,7 @@ const App = () => {
     setSelectedCountry(null);
   };
 
-  //Filtre
+  //Filtre by countrie
   function filtrarPorNombre(text) {
     const textoEnMinusculas = text.toLowerCase();
     return allNames
@@ -50,10 +52,31 @@ const App = () => {
         )
       : "";
   }
+  //Filtre by capital
+  function filtrarPorCapital(text) {
+    const textoEnMinusculas = text.toLowerCase();
+    return Object.values(allCapitals) > 0
+      ? Object.values(allCapitals).filter(([ciudad]) =>
+          ciudad.toLowerCase().includes(text.toLowerCase())
+        )
+      : "";
+  }
+
   const handleShow = (countryName) => {
     setCountries(countryName);
     setSelectedCountry(countryName);
   };
+
+  //for temperature
+  useEffect(() => {
+    if (names.capital) {
+      const selected = names.capital[0];
+
+      weatherService.getTem({ capital: selected }).then((data) => {
+        setTemp(data);
+      });
+    }
+  }, [resultadoFiltro]);
 
   return (
     <>
@@ -64,7 +87,7 @@ const App = () => {
       </form>
       <br></br>
       {numberResultFiltre === 1 || selectedCountry ? (
-        <Information names={names} />
+        <Information names={names} temp={temp} />
       ) : numberResultFiltre <= 10 ? (
         resultadoFiltro ? (
           resultadoFiltro.map((countrie) => (
